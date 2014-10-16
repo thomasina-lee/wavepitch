@@ -22,7 +22,8 @@ def index():
 
     """
     #print "love"
-    wav_files = [ f for f in os.listdir(wav_path) if os.path.isfile(os.path.join(wav_path, f)) and f.endswith('.wav') ]
+    #wav_files = [ f for f in os.listdir(wav_path) if os.path.isfile(os.path.join(wav_path, f)) and f.endswith('.wav') ]
+    wav_files = []
     return flask.render_template("index.html", wav_files = wav_files)
 
 
@@ -73,7 +74,7 @@ if __name__ == "__main__":
     import os
 
     port = 8000
-    get_args()
+    #get_args()
     # Open a web browser pointing at the app.
     #os.system("open http://localhost:{0}".format(port))
 
