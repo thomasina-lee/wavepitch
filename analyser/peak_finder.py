@@ -162,7 +162,7 @@ class NotePeakFinder:
         pc = np.percentile(self._smoothed_spectrum, 99.0)
         min_peak_value = (np.mean(self._smoothed_spectrum[self._smoothed_spectrum < pc]) + 
                           np.mean(self._smoothed_spectrum[self._smoothed_spectrum >= pc]))/2
-        print min_peak_value
+        #print min_peak_value
         return min_peak_value
     
     def _find_tall_smooth_peak(self, extremas):

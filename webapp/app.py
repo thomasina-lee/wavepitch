@@ -21,7 +21,7 @@ def index():
     When you request the root path, you'll get the index.html template.
 
     """
-    print "love"
+    #print "love"
     wav_files = [ f for f in os.listdir(wav_path) if os.path.isfile(os.path.join(wav_path, f)) and f.endswith('.wav') ]
     return flask.render_template("index.html", wav_files = wav_files)
 
@@ -46,9 +46,9 @@ def analyse():
           active_notes:  whether note n is detected at time interval t
 
     """
-    print "hello"
+    #print "hello"
     filename = flask.request.form["filename"] 
-    print filename
+    #print filename
        
     payload = analyse_wav_file(os.path.join(wav_path, filename))
     

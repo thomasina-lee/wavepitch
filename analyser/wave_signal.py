@@ -70,7 +70,7 @@ class Signal:
         note_peak_finder = peak_finder.NotePeakFinder(freq, spectrum)
         
         window_width , sigma = self._get_conv_window_param()
-        print window_width, sigma
+        #print window_width, sigma
         conv_window = spsignal.general_gaussian(window_width, 1, sigma)
         
         note_peak_finder.set_conv_window(conv_window)
