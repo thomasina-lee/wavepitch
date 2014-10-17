@@ -23,7 +23,7 @@ class Signal:
     
     def set_signal(self, signal, rate):
         self._rate = rate
-        self._signal_values = np.array(signal)
+        self._signal_values = np.array(signal, copy = False)
         return self
         
     def get_sub_signal(self, start_time, duration, is_time = True):

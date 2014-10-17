@@ -1,6 +1,4 @@
-"""
-This file is part of the flask+d3 Hello World project.
-"""
+
 
 import flask
 import argparse
@@ -8,7 +6,7 @@ import sys, os
 
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), ".."))
 
-from analyser.music_analyser import analyse_wav_file 
+from analyser.music_analyser import analyse_wav_url 
 
 
 app = flask.Flask(__name__)
@@ -48,10 +46,10 @@ def analyse():
 
     """
     #print "hello"
-    filename = flask.request.form["filename"] 
+    url = flask.request.form["url"] 
     #print filename
        
-    payload = analyse_wav_file(os.path.join(wav_path, filename))
+    payload = analyse_wav_url(os.path.join(wav_path, url))
     
     return payload
     #return filename

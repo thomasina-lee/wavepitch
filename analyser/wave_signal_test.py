@@ -11,7 +11,6 @@ class TestNotePeakFinder(unittest.TestCase):
     
     def _sub_test_note_peak_finder(self, rate, duration):
         
-
        
         target_freqs = [246.94, 293.66, 349.23, 415.30, 493.88] # B D F G#
         target_amps = [5.0, 4.0, 4.0, 3.0, 4.0]
