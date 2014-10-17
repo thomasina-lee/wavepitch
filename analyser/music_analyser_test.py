@@ -28,7 +28,7 @@ class TestMusicAnalyser(unittest.TestCase):
         the_signal.get_rate = MagicMock()
         the_signal.get_rate.return_value = 44100
         ma = MusicAnalyser(the_signal, SignalSliceGenerator(44100*5, 44100))
-        xt, x_name, t = ma.generate_matrix()
+        xt, x, x_name, t = ma.generate_matrix()
         expected_slice = np.zeros([97])
         expected_slice[[55, 59, 62]] = 1
        

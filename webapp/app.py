@@ -10,7 +10,7 @@ from analyser.music_analyser import analyse_wav_url
 
 
 app = flask.Flask(__name__)
-wav_path = '/tmp/music_analyser/'
+
 
 
 @app.route("/")
@@ -19,10 +19,9 @@ def index():
     When you request the root path, you'll get the index.html template.
 
     """
-    #print "love"
-    #wav_files = [ f for f in os.listdir(wav_path) if os.path.isfile(os.path.join(wav_path, f)) and f.endswith('.wav') ]
-    wav_files = []
-    return flask.render_template("index.html", wav_files = wav_files)
+    
+    default_url = 'https://s3-eu-west-1.amazonaws.com/music-analysis/rise like a phoenix beginning.wav'
+    return flask.render_template("index.html", default_url = default_url)
 
 
 
@@ -45,24 +44,20 @@ def analyse():
           active_notes:  whether note n is detected at time interval t
 
     """
-    #print "hello"
-    url = flask.request.form["url"] 
-    #print filename
-       
-    payload = analyse_wav_url(os.path.join(wav_path, url))
+    try:
+        url = flask.request.form["url"] 
+        #print url
+        #payload = '{}'
+        payload = analyse_wav_url(url, 1024*1024)
+        
+        return payload
+    except:
+        flask.abort(400)
+        pass
     
-    return payload
-    #return filename
 
 
-def get_args():
-    
-    global wav_path
-    
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--wavpath", default=wav_path)
-    args = parser.parse_args()
-    wav_path = args.wavpath
+
     
     
     
@@ -72,10 +67,6 @@ if __name__ == "__main__":
     import os
 
     port = 8000
-    #get_args()
-    # Open a web browser pointing at the app.
-    #os.system("open http://localhost:{0}".format(port))
-
-    # Set up the development server on port 8000.
+    
     app.debug = True
     app.run(port=port, debug=True)
