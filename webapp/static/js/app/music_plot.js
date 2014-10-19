@@ -45,7 +45,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		 * 
 		 */
     
-    console.log(data);
+    
     // process the data first
     data.active_notes = data.active_notes.map(function(d) {
       d.note_name = data.note_names[d.n];
@@ -61,13 +61,13 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		
 		var time_delta =  (d3.max(data.time_values) - d3.min(data.time_values))/(data.time_values.length-1);
 		
-		console.log([min_time, max_time, min_note, max_note, time_delta]);
+		
 		var xscale = d3.scale.linear()
 		            .domain([min_time - time_delta, max_time + time_delta])
 		            .range([ 0, dimension.width ]);
 		        
 
-    console.log(ydomain);
+    
     
 		var yscale = d3.scale.ordinal()
                 .domain(d3.range(min_note, max_note + 1))
@@ -91,7 +91,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		   
 
     (d3.select('svg')).call(tip);
-		console.log(data);
+		
 		// Display the axes.
 		svg_chart.select("#xaxis").call(xaxis);
 		svg_chart.select("#yaxis").call(yaxis);
@@ -139,7 +139,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		;
 
 
-		console.log('ends');
+		
 	};
 
 
@@ -147,10 +147,24 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
     $('#music_error_box').show();
 
   } ;
+  
+  var show_validation = function(ele){
+     var val = ele.val();
+     
+      if (!(val.indexOf('http://', 0) === 0 || val.indexOf('https://', 0) ===0)){
+        ele.parent().addClass('has-warning');
+      } else {
+        ele.parent().removeClass('has-warning');
+      }
+  
+  };
+  
 
 	$(function() {
 	  
     $('#music_error_box').hide();
+
+
 
     $('#music_error_box .close').on('click', function(e) {
         $(this).parent().hide();
@@ -178,7 +192,10 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 
 
 		
-    
+    $('#music_analyse input').keyup(function(e){
+       
+       show_validation($(this));
+    });
     
  
 
