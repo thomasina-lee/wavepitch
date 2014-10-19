@@ -53,7 +53,10 @@ def analyse_wav_signal(sig):
                     for y in range(0, active_notes_0.shape[1])
                     if active_notes_0[x, y] > 0]
     
-    payload = json.dumps({"active_notes":active_notes, "note_names": note_names,  "time_values": time_values})
+    payload = json.dumps({"active_notes":active_notes, 
+                          "note_names": note_names, 
+                          "note_numbers": note_numbers, 
+                          "time_values": time_values})
     
     return payload
 

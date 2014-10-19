@@ -45,7 +45,10 @@ def analyse():
 
     """
     try:
-        url = flask.request.form["url"] 
+        url = flask.request.form["url"]
+        
+        if not url.startswith("http://") and not url.startswith("https://")  :
+            raise Exception('Invalid URL, url start with http/https required')
         #print url
         #payload = '{}'
         payload = analyse_wav_url(url, 1024*1024)
