@@ -149,6 +149,13 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
   } ;
 
 	$(function() {
+	  
+    $('#music_error_box').hide();
+
+    $('#music_error_box .close').on('click', function(e) {
+        $(this).parent().hide();
+    });
+
 
 		$("#music_analyse button").click(function() {
 
@@ -171,11 +178,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 
 
 		
-    $('#music_error_box').hide();
-
-    $('#music_error_box .close').on('click', function(e) {
-        $(this).parent().hide();
-    });
+    
     
  
 
