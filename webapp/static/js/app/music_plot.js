@@ -113,7 +113,13 @@ define([ 'jquery',  'd3' ], function($, d3) {
               return " ";
             }
           });
-        })
+          $("#music_chart_container rect").tooltip({
+      'container' : 'body',
+      'placement' : 'right'
+     });    
+          
+          
+      })
       .on("mouseout", function(d) {
   
         d3.select("#music_note_detail input")
@@ -124,10 +130,7 @@ define([ 'jquery',  'd3' ], function($, d3) {
       })
 
 		;
-		$("#music_chart_container rect").tooltip({
-      'container' : 'body',
-      'placement' : 'right'
-     });
+
 		
 		console.log('ends');
 	};
