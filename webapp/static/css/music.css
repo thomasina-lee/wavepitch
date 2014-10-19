@@ -41,3 +41,15 @@ div #music_chart_container {
 }
 
 /** 200439 **/
+
+#music_overlay{
+  
+
+  position: absolute;
+  left=0;
+  top=0;
+  z-index: 10000;
+  background-color: rgba(0,0,0,0.5); /*dim the background*/
+  
+ 
+}

@@ -138,7 +138,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
      
 		;
 
-
+  $("#music_overlay").hide();
 		
 	};
 
@@ -162,6 +162,11 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 
 	$(function() {
 	  
+	  
+	  $("#music_overlay")
+      .width($("#music_overlay").parent().width())
+      .height($("#music_overlay").parent().height());
+	  
     $('#music_error_box').hide();
 
 
@@ -173,7 +178,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 
 		$("#music_analyse button").click(function() {
 
-			
+			$("#music_overlay").show();
       $('#music_error_box').hide();
   
 			$.ajax({
