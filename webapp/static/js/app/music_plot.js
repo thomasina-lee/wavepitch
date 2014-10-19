@@ -1,5 +1,5 @@
 
-define([ 'jquery',  'd3' ], function($, d3) {
+define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 
 	
 
@@ -44,7 +44,7 @@ define([ 'jquery',  'd3' ], function($, d3) {
 		 * active_notes:  array of {n (note_index), t (time_index), v (value of whether note is active)}
 		 * 
 		 */
-    console.log('callback start');
+    
     console.log(data);
     // process the data first
     data.active_notes = data.active_notes.map(function(d) {
@@ -53,22 +53,22 @@ define([ 'jquery',  'd3' ], function($, d3) {
       d.time_value = data.time_values[d.t];
       return d;
     });
-    console.log('part 1');
+    
 		var max_time = (d3.max(data.active_notes, function(note_data){return note_data.time_value;}));
 		var min_time = (d3.min(data.active_notes, function(note_data){return note_data.time_value;}));
 		var max_note = (d3.max(data.active_notes, function(note_data){return note_data.note_number;}));
 		var min_note = (d3.min(data.active_notes, function(note_data){return note_data.note_number;}));
 		
 		var time_delta =  (d3.max(data.time_values) - d3.min(data.time_values))/(data.time_values.length-1);
-		console.log('part 2');
+		
 		console.log([min_time, max_time, min_note, max_note, time_delta]);
 		var xscale = d3.scale.linear()
 		            .domain([min_time - time_delta, max_time + time_delta])
 		            .range([ 0, dimension.width ]);
-		console.log('part 2');            
+		        
 
     console.log(ydomain);
-    console.log('part 3');
+    
 		var yscale = d3.scale.ordinal()
                 .domain(d3.range(min_note, max_note + 1))
                 .rangeBands([ dimension.height , 0]);
@@ -83,9 +83,14 @@ define([ 'jquery',  'd3' ], function($, d3) {
                 
     var xaxis = d3.svg.axis().scale(xscale).orient("bottom");
     var yaxis = d3.svg.axis().scale(yaxis_scale).orient("left");
+    
+		var tip = d3.tip().attr('class', 'd3-tip')
+		  .offset([-yscale.rangeBand()/2.0, 0])
+		  .html(function(d) { 
+		     return  "Time: " + d.time_value + ", Note: " + d.note_name; });
+		   
 
-		
-
+    (d3.select('svg')).call(tip);
 		console.log(data);
 		// Display the axes.
 		svg_chart.select("#xaxis").call(xaxis);
@@ -100,10 +105,14 @@ define([ 'jquery',  'd3' ], function($, d3) {
 			.attr("width", function(d) {return Math.abs(xscale(time_delta) - xscale(0));})
 			.attr("height", function(d) {return yscale.rangeBand();})
 			.style("fill", function(d) {return colorScale(d.v);})
-			.attr("title", function(d) {
-        return "Time: " + d.time_value + ", Note: " + d.note_name;
-      })
-      .on("mouseover", function(d) {
+			//.on("mouseover", tip.show)
+			//.on("mouseout", tip.hide)
+			
+      .on("mouseover", function() {
+        
+        var args = Array.prototype.slice.call(arguments);
+        var d = args[0]; 
+        
         d3.select("#music_note_detail input")
           .property("value", function() {
             if (d.v > 0) {
@@ -112,25 +121,24 @@ define([ 'jquery',  'd3' ], function($, d3) {
               return " ";
             }
           });
-          $("#music_chart_container rect").tooltip({
-      'container' : 'body',
-      'placement' : 'right'
-     });    
-          
-          
+         tip.show.apply(this, args);
+           
       })
-      .on("mouseout", function(d) {
-  
+
+      .on("mouseout", function() {
+        var args = Array.prototype.slice.call(arguments);
+        
         d3.select("#music_note_detail input")
           .property("value", function() {
             return " ";
           });
-
+        tip.hide.apply(this, args);
+        
       })
-
+     
 		;
 
-		
+
 		console.log('ends');
 	};
 
@@ -169,7 +177,7 @@ define([ 'jquery',  'd3' ], function($, d3) {
         $(this).parent().hide();
     });
     
-
+ 
 
 	});
 
