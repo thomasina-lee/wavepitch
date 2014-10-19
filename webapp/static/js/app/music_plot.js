@@ -17,7 +17,7 @@ define([ 'jquery',  'd3' ], function($, d3) {
 							"translate(" + dimension.margin + ", " + dimension.margin + ")");
 	;
 
-	//svg_chart.append("circle").attr("cx", 0).attr("cy", 0).attr("r", 200);
+
 
 	svg_chart.append("svg:g").attr("id", "xaxis").attr("transform",
 			"translate(" + 0 + ", " + (dimension.height) + ")");
@@ -28,8 +28,7 @@ define([ 'jquery',  'd3' ], function($, d3) {
 	var colorScale = d3.scale.quantize().range(
 			[ "#156b87", "#876315", "#543510", "#872815" ]).domain([ 0, 1 ]);
 
-	//var xscale = d3.scale.ordinal().rangeBands([ 0, dimension.width ]);
-	//var yscale = d3.scale.ordinal().rangeBands([ dimension.height, 0 ]);
+
 	
 	
 
@@ -159,10 +158,7 @@ define([ 'jquery',  'd3' ], function($, d3) {
 				error: error_callback
 			});
 			
-			//svg_chart.append("circle")
-			//	.attr("cx", 50)
-			//	.attr("cy", 5)
-			//	.attr("r", 10);
+
 		});
 
 
@@ -177,7 +173,6 @@ define([ 'jquery',  'd3' ], function($, d3) {
 
 	});
 
-	//d3.select("#file_submit").on("click", 
-	//);
+
 
 });
