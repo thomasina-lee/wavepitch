@@ -9,7 +9,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		margin : 70
 	};
 
-	var svg_chart = d3.select("#music_chart_container")
+	var svg_chart = d3.select("#wavepitch_chart_container")
 					.append("svg")
 					.attr("width", dimension.width + 2 * dimension.margin)
 					.attr("height", dimension.height + 2 * dimension.margin)
@@ -113,7 +113,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
         var args = Array.prototype.slice.call(arguments);
         var d = args[0]; 
         
-        d3.select("#music_note_detail input")
+        d3.select("#wavepitch_note_detail input")
           .property("value", function() {
             if (d.v > 0) {
               return "Time: " + d.time_value + ", Note: " + d.note_name;
@@ -128,7 +128,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
       .on("mouseout", function() {
         var args = Array.prototype.slice.call(arguments);
         
-        d3.select("#music_note_detail input")
+        d3.select("#wavepitch_note_detail input")
           .property("value", function() {
             return " ";
           });
@@ -138,13 +138,13 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
      
 		;
 
-  $("#music_overlay").hide();
+  $("#wavepitch_overlay").hide();
 		
 	};
 
 
   var error_callback = function (jqXHR, exception, _){
-    $('#music_error_box').show();
+    $('#wavepitch_error_box').show();
 
   } ;
   
@@ -163,29 +163,29 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 	$(function() {
 	  
 	  
-	  $("#music_overlay")
-      .width($("#music_overlay").parent().width())
-      .height($("#music_overlay").parent().height());
+	  $("#wavepitch_overlay")
+      .width($("#wavepitch_overlay").parent().width())
+      .height($("#wavepitch_overlay").parent().height());
 	  
-    $('#music_error_box').hide();
+    $('#wavepitch_error_box').hide();
 
 
 
-    $('#music_error_box .close').on('click', function(e) {
+    $('#wavepitch_error_box .close').on('click', function(e) {
         $(this).parent().hide();
     });
 
 
-		$("#music_analyse button").click(function() {
+		$("#wavepitch_analyse button").click(function() {
 
-			$("#music_overlay").show();
-      $('#music_error_box').hide();
+			$("#wavepitch_overlay").show();
+      $('#wavepitch_error_box').hide();
   
 			$.ajax({
 				url : "/analyse/",
 				type : 'POST',
 				data : {
-					url : $("#music_analyse input").val()
+					url : $("#wavepitch_analyse input").val()
 				},
 				dataType : "json",
 				success : analyse_callback,
@@ -197,7 +197,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 
 
 		
-    $('#music_analyse input').keyup(function(e){
+    $('#wavepitch_analyse input').keyup(function(e){
        
        show_validation($(this));
     });

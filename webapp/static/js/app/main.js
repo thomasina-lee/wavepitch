@@ -22,8 +22,8 @@ requirejs.config({
 });
 
 // Start the main app logic.
-requirejs(['jquery',  'bootstrap', 'd3', 'd3tip','app/music_plot'],
-function   ( $, bootstrap,  d3, d3tip, musicPlot) {
+requirejs(['jquery',  'bootstrap', 'd3', 'd3tip','app/wavepitch_plot'],
+function   ( $, bootstrap,  d3, d3tip, wavepitchPlot) {
 	console.log("test");
     //jQuery, canvas and the app/sub module are all
     //loaded and can be used here now.

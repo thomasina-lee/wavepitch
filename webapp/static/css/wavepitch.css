@@ -1,6 +1,6 @@
 
 
-
+@import url(http://fonts.googleapis.com/css?family=Gloria+Hallelujah);
  
 div #music_chart_container {
   overflow-x: scrollbar;
@@ -52,4 +52,19 @@ div #music_chart_container {
   background-color: rgba(0,0,0,0.5); /*dim the background*/
   
  
+}
+
+
+#music_note_detail{
+  background-color: rgba(0,0,0,0.5); /*dim the background*/
+}
+
+.navbar{
+  
+}
+
+.navbar-brand{
+  font-family: 'Gloria Hallelujah', cursive;
+  font-size:28px;
+  color: red;
 }
