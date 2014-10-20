@@ -190,7 +190,8 @@ class NotePeakFinder:
         max_idxs = self._find_tall_peak_max(tall_peak_range)
         
         peak_freqs = self._freq[max_idxs]
-        return peak_freqs
+        peak_amplitude = self._spectrum[max_idxs]
+        return peak_freqs, peak_amplitude
     
 
 

@@ -25,8 +25,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 
 	var position = 0;
 
-	var colorScale = d3.scale.quantize().range(
-			[ "#156b87", "#876315", "#543510", "#872815" ]).domain([ 0, 1 ]);
+
 
 
 	
@@ -46,33 +45,33 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		 */
     
     
-    // process the data first
-    data.active_notes = data.active_notes.map(function(d) {
-      d.note_name = data.note_names[d.n];
-      d.note_number = data.note_numbers[d.n];
-      d.time_value = data.time_values[d.t];
-      return d;
-    });
-    
+	    // process the data first
+	    data.active_notes = data.active_notes.map(function(d) {
+	      d.note_name = data.note_names[d.n];
+	      d.note_number = data.note_numbers[d.n];
+	      d.time_value = data.time_values[d.t];
+	      return d;
+	    });
+
 		var max_time = (d3.max(data.active_notes, function(note_data){return note_data.time_value;}));
 		var min_time = (d3.min(data.active_notes, function(note_data){return note_data.time_value;}));
 		var max_note = (d3.max(data.active_notes, function(note_data){return note_data.note_number;}));
 		var min_note = (d3.min(data.active_notes, function(note_data){return note_data.note_number;}));
-		
+		var max_value = (d3.max(data.active_notes, function(note_data){return note_data.v;}));
 		var time_delta =  (d3.max(data.time_values) - d3.min(data.time_values))/(data.time_values.length-1);
 		
 		
 		var xscale = d3.scale.linear()
 		            .domain([min_time - time_delta, max_time + time_delta])
 		            .range([ 0, dimension.width ]);
-		        
-
     
     
 		var yscale = d3.scale.ordinal()
                 .domain(d3.range(min_note, max_note + 1))
                 .rangeBands([ dimension.height , 0]);
                 
+		var colorScale = d3.scale.linear().range(
+				[ "#ffffff",  "#471807" ]).domain([ 0, max_value ]);
     var ydomain = data.note_numbers
                         .map(function(d, i){ return [d, data.note_names[i]];})
                         .filter(function(d){return d[0] >= min_note && d[0]<= max_note;})

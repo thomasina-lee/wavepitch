@@ -15,9 +15,13 @@ class MusicAnalyser:
         
     
     def _get_note_numbers(self, sub_signal):
-        peak_freq = sub_signal.get_peak_freq()
-        valid_music_note = filter(lambda m: m.is_note(),  [MusicNote().set_from_freq(f, 0.3) for f in peak_freq])
-        return [ mn.get_note_number() for mn in valid_music_note ]
+        peak_freq, peak_amplitude = sub_signal.get_peak_freq()
+        paired = [{'freq': x[0], 'amp': x[1]} for x in zip(peak_freq, peak_amplitude)]
+        valid_music_note_pair = filter(lambda m: m['note'].is_note(),  
+                                  [{'note': MusicNote().set_from_freq(f['freq'], 0.3),
+                                    'amp': f['amp']} for f in paired])
+        return [ mn['note'].get_note_number() for mn in  valid_music_note_pair ], \
+                  [ mn['amp'] for mn in valid_music_note_pair ]
             
     
 
@@ -32,8 +36,8 @@ class MusicAnalyser:
 
             t.append(window_value *1.0 / self._wave_signal.get_rate())
             sub_signal = self._wave_signal.get_sub_signal(window_start, duration, False)
-            note_numbers = self._get_note_numbers(sub_signal)
-            xt[note_numbers, ii] = 1
+            note_number, note_amplitute = self._get_note_numbers(sub_signal)
+            xt[note_number, ii] = note_amplitute
             
             
         return xt, x, x_name, t
