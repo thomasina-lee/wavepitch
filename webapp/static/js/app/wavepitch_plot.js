@@ -160,10 +160,16 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
   };
   
 
-	$(function() {
+  $(function() {
 	  
 	  
-	  $("#wavepitch_overlay")
+	$( window ).resize(function() {
+		$("#wavepitch_overlay")
+	      .width($("#wavepitch_overlay").parent().width())
+	      .height($("#wavepitch_overlay").parent().height());
+	 });  
+	  
+	$("#wavepitch_overlay")
       .width($("#wavepitch_overlay").parent().width())
       .height($("#wavepitch_overlay").parent().height());
 	  
@@ -203,8 +209,10 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
     });
     
  
+  
+    
 
-	});
+  });
 
 
 

@@ -21,11 +21,19 @@ def index():
     """
     
     default_url = 'https://s3-eu-west-1.amazonaws.com/music-analysis/rise like a phoenix beginning.wav'
-    return flask.render_template("index.html", default_url = default_url)
+    return flask.render_template("index.html", active_page='main', default_url = default_url)
 
 
 
+@app.route("/about")
+def about():
+    """
+    When you request the root path, you'll get the index.html template.
 
+    """
+    
+    
+    return flask.render_template("about.html", active_page='about')
  
 
 

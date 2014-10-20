@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container-fluid">
+       <div class="panel panel-default">
+           <div class="panel-body">
+           <h1 class="page-header">About</h1>
+           <p>This project starts with the fact that I am not so talented with music. 
+           But I would like to play a piece of music I love:  'Rise Like A Phoenix'
+           performed by Conchita Wurst, winner of the Eurovision Song Contest 2014 </p>
+           
+           <p>
+           The plan is this:  Given a wave file, 
+           perform the Fourier Transform on it to get the wave spectrum, 
+           find the peaks frequencies,
+           calculate the corresponding pitch number of those frequencies, 
+           and display the result!
+           </p>
+
+           <p>
+           The hardest part is to identify peak frequencies.  As with real data, 
+           the wave form will be very noisy.  I have deployed some heuristics on this,
+           but I don't think the result is very great.
+           </p>           
+           
+            <p>
+           Anyway, I hope you like it!   You can get the source from git-hub.
+           </p>    
+           
+          </div>
+        </div>  
+    </div>
+{% endblock %}

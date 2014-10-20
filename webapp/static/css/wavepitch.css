@@ -2,7 +2,7 @@
 
 @import url(http://fonts.googleapis.com/css?family=Gloria+Hallelujah);
  
-
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
 .d3-tip {
   line-height: 1;
@@ -33,9 +33,9 @@
   left: 0;
 }
 
-/** 200439 **/
 
-div #wavepitch_chart_container {
+
+#wavepitch_chart_container {
   overflow-x: scrollbar;
   overflow-y: hidden;
 }
@@ -63,11 +63,38 @@ div #wavepitch_chart_container {
 }
 
 .navbar{
-  
+  background-color: purple;
+}
+
+.navbar .icon-bar{
+  background-color: white;
+}
+
+.navbar .navbar-nav a{
+  color: white;
 }
 
 .navbar-brand{
   font-family: 'Gloria Hallelujah', cursive;
   font-size:28px;
-  color: red;
+  color: yellow;
 }
+
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  color: #555;
+}
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+  margin-top: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: normal;
+  color: #333;
+}
+
