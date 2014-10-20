@@ -2,14 +2,7 @@
 
 @import url(http://fonts.googleapis.com/css?family=Gloria+Hallelujah);
  
-div #music_chart_container {
-  overflow-x: scrollbar;
-  overflow-y: hidden;
-}
 
-#music_error_box {
-  display: none;
-}
 
 .d3-tip {
   line-height: 1;
@@ -42,7 +35,16 @@ div #music_chart_container {
 
 /** 200439 **/
 
-#music_overlay{
+div #wavepitch_chart_container {
+  overflow-x: scrollbar;
+  overflow-y: hidden;
+}
+
+#wavepitch_error_box {
+  display: none;
+}
+
+#wavepitch_overlay{
   
 
   position: absolute;
@@ -55,7 +57,8 @@ div #music_chart_container {
 }
 
 
-#music_note_detail{
+
+#wavepitch_note_detail{
   background-color: rgba(0,0,0,0.5); /*dim the background*/
 }
 
