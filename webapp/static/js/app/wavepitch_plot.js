@@ -159,7 +159,17 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
   
   };
   
+  
+  var input_submit_control = function(enable=true){
+	  $('#wavepitch_analyse input').prop('disabled', !enable);;
+	  $('#wavepitch_analyse button').prop('disabled',!enable);
+  };
 
+  var complete_callback = function(){
+	  input_submit_control(true);
+	  
+  };
+  
   $(function() {
 	  
 	  
@@ -185,8 +195,8 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		$("#wavepitch_analyse button").click(function() {
 
 			$("#wavepitch_overlay").show();
-      $('#wavepitch_error_box').hide();
-  
+			$('#wavepitch_error_box').hide();
+			input_submit_control(false);
 			$.ajax({
 				url : "/analyse/",
 				type : 'POST',
@@ -195,7 +205,8 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 				},
 				dataType : "json",
 				success : analyse_callback,
-				error: error_callback
+				error: error_callback,
+				complete: complete_callback
 			});
 			
 

@@ -67,9 +67,10 @@ def analyse_wav_file(file_name):
     return analyse_wav_signal(sig)
 
 
-def analyse_wav_url(url, max_byte_allowed = 1024*100):
-    wreader = PartialWaveReader(SimpleWebStreamer(url))
+def analyse_wav_url(url, max_byte_allowed = 1024*100, timeout = 10):
+    wreader = PartialWaveReader(SimpleWebStreamer(url).set_timeout(timeout))
     wreader.set_max_byte_allowed(max_byte_allowed)
+
     sample_rate, wave_data = wreader.numpy_read_wav()
     
     

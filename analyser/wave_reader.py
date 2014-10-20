@@ -15,12 +15,15 @@ class SimpleWebStreamer:
         """
         
         self._url = url
+        self._timeout = 10
         
         
-        
+
     
-        
-    
+
+    def set_timeout(self, value):
+        self._timeout = value
+        return self
         
     def file_size(self):
         """
@@ -41,7 +44,7 @@ class SimpleWebStreamer:
         
 
     def open(self):
-        self._response = requests.get(self._url, stream = True)
+        self._response = requests.get(self._url, stream = True, timeout = self._timeout)
         
         
     def read(self, chunk_size):
