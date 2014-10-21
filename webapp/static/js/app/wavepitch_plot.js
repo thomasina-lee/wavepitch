@@ -1,7 +1,10 @@
 
 define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
+
+	alert('main script');
 	
 	function supportsSVG() {
+		
 	    return !!document.createElementNS && !!document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGRect;
 	    
 	  }
