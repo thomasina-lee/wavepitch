@@ -1,21 +1,23 @@
 
-import wave_signal
+from wave_signal import SignalSliceGenerator, Signal
+from peak_finder import SignalPeakFreqFinderV1
 from numpy import rate
 from note import MusicNote
 import numpy as np
 import json
 from wave_reader import PartialWaveReader, SimpleWebStreamer
 
+
 class MusicAnalyser:
     
-    def __init__(self, wave_signal, slice_generator):
+    def __init__(self, wave_signal, slice_generator, signal_peak_freq_finder = SignalPeakFreqFinderV1()):
         
         self._wave_signal = wave_signal
         self._signal_slice_generator = slice_generator
-        
+        self._peak_freq_finder = signal_peak_freq_finder
     
     def _get_note_numbers(self, sub_signal):
-        peak_freq, peak_amplitude = sub_signal.get_peak_freq()
+        peak_freq, peak_amplitude = self._peak_freq_finder.get_peak_freq(sub_signal)
         paired = [{'freq': x[0], 'amp': x[1]} for x in zip(peak_freq, peak_amplitude)]
         valid_music_note_pair = filter(lambda m: m['note'].is_note(),  
                                   [{'note': MusicNote().set_from_freq(f['freq'], 0.3),
@@ -45,7 +47,7 @@ class MusicAnalyser:
             
 def analyse_wav_signal(sig):  
     
-    slice_generator =  wave_signal.SignalSliceGenerator(sig.get_signal_length(),sig.get_rate())
+    slice_generator =  SignalSliceGenerator(sig.get_signal_length(),sig.get_rate())
     
     mana = MusicAnalyser(sig, slice_generator)
     active_notes_0, note_numbers, note_name_0, time_values = mana.generate_matrix()
@@ -65,7 +67,7 @@ def analyse_wav_signal(sig):
     return payload
 
 def analyse_wav_file(file_name):
-    sig = wave_signal.Signal()
+    sig = Signal()
     sig.load_file(file_name)
     
     return analyse_wav_signal(sig)
@@ -78,7 +80,7 @@ def analyse_wav_url(url, max_byte_allowed = 1024*100, timeout = 10):
     sample_rate, wave_data = wreader.numpy_read_wav()
     
     
-    sig = wave_signal.Signal()
+    sig = Signal()
     
     sig.set_signal(wave_data, sample_rate)
     

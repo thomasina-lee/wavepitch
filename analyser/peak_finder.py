@@ -126,7 +126,7 @@ class PeakRangeFinder:
     
     
 
-class NotePeakFinder:
+class FreqPeakFinderV1:
 
     def __init__(self, freq, spectrum):
         
@@ -182,7 +182,7 @@ class NotePeakFinder:
         return max_idxs
         
     
-    def get_peak_freq(self):
+    def get_peak(self):
         self._smooth()
         extremas = self._get_smoothed_extremas()
         tall_peak_range = self._find_tall_smooth_peak(extremas)
@@ -195,7 +195,44 @@ class NotePeakFinder:
     
 
 
+
+class SignalPeakFreqFinderV1:
+    
+    def _conv_windon_fn(self, sig):
         
+        duration = 1.0 /  sig.get_rate() *  sig.get_signal_length()
+        base_duration =  0.2
+        window_width = 10.0 *  duration / base_duration
+        sigma = 3.0  *  duration / base_duration
+        return window_width , sigma
+    
+    
+    
+    def __init__(self):
+        pass
+        
+        
+        
+    def get_peak_freq(self, sig):
+        
+        freq, amplitute = sig.get_freq_amplitute()
+        note_peak_finder = FreqPeakFinderV1(freq, amplitute)
+        
+        window_width , sigma = self._conv_windon_fn(sig)
+    #print window_width, sigma
+        conv_window = spsignal.general_gaussian(window_width, 1, sigma)
+        
+        note_peak_finder.set_conv_window(conv_window)
+        peak_freqs, peak_amplitude = note_peak_finder.get_peak()
+        
+        print peak_amplitude
+        return peak_freqs, peak_amplitude
+
+
+    
+   
+    
+    
         
 
     
