@@ -1,7 +1,5 @@
 
 define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
-
-	alert('main script');
 	
 	function supportsSVG() {
 		
@@ -14,6 +12,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		$("#main_content").hide();
 		return;
 	}
+
 
 	var dimension = {
 			width : 1400,
@@ -157,6 +156,9 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 
 	} ;
 
+	
+
+
 	var show_validation = function(ele){
 		var val = ele.val();
 
@@ -168,16 +170,17 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 
 	};
 
-
-	var input_submit_control = function(enable=true){
-		$('#wavepitch_analyse input').prop('disabled', !enable);;
-		$('#wavepitch_analyse button').prop('disabled',!enable);
+	
+	var input_submit_control = function(isEnable){
+		$('#wavepitch_analyse input').prop('disabled', !isEnable);
+		$('#wavepitch_analyse button').prop('disabled',!isEnable);
 	};
-
+	
 	var complete_callback = function(){
 		input_submit_control(true);
 
 	};
+
 
 	$(function() {
 
@@ -233,7 +236,6 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 
 
 	});
-
 
 
 });
