@@ -1,60 +1,70 @@
 {% extends "base.html" %} {% block content %}
-<div class="container-fluid">
 
-
-
-
-	<div class="panel panel-default">
-
-
-
-		<div class="panel-body">
-			<div class="row">
-				<div class="col-sm-3">
-					<p>
-						Enter a url of a WAV file. and see what WavePitch thinks the note
-						pitches are! <br />(only the first 1 Mb will be analysed)
-					</p>
-				</div>
-				<div class="col-sm-9">
-					<div id="wavepitch_analyse" class="input-group">
-						<span class="input-group-addon">url:</span> <input
-							class="form-control" type="text" value="{{default_url}}" /> <span
-							class="input-group-btn">
-							<button type="button" class="btn btn-default">go</button>
-						</span>
-					</div>
-					<div id="wavepitch_error_box"
-						class="alert alert-danger alert-dismissible" role="alert">
-						<button type="button" class="close">
-							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-						</button>
-						<strong>Warning!</strong> Unable to complete request. Please check
-						if the link is correct.
-					</div>
-
-				</div>
-
-			</div>
-
-		</div>
-
-	</div>
-
-	<div class="panel panel-default">
-		<div id="wavepitch_overlay"></div>
-		<div id="wavepitch_note_detail">
-			<input class="form-control" type="text" readonly />
-		</div>
-		<div class="panel-body">
-
-			<div id="wavepitch_chart_container" />
-
-		</div>
-
-	</div>
-
+<div id='content_not_supported'>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      Sorry but the feature is not supported by your browser
+    </div>
+  </div>
 </div>
 
+<div id='main_content'>
+	<div class="container-fluid">
+	
+	
+	
+	
+		<div class="panel panel-default">
+	
+	
+	
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-sm-3">
+						<p>
+							Enter a url of a WAV file. and see what WavePitch thinks the note
+							pitches are! <br />(only the first 1 Mb will be analysed)
+						</p>
+					</div>
+					<div class="col-sm-9">
+						<div id="wavepitch_analyse" class="input-group">
+							<span class="input-group-addon">url:</span> <input
+								class="form-control" type="text" value="{{default_url}}" /> <span
+								class="input-group-btn">
+								<button type="button" class="btn btn-default">go</button>
+							</span>
+						</div>
+						<div id="wavepitch_error_box"
+							class="alert alert-danger alert-dismissible" role="alert">
+							<button type="button" class="close">
+								<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+							</button>
+							<strong>Warning!</strong> Unable to complete request. Please check
+							if the link is correct.
+						</div>
+	
+					</div>
+	
+				</div>
+	
+			</div>
+	
+		</div>
+	
+		<div class="panel panel-default">
+			<div id="wavepitch_overlay"></div>
+			<div id="wavepitch_note_detail">
+				<input class="form-control" type="text" readonly />
+			</div>
+			<div class="panel-body">
+	
+				<div id="wavepitch_chart_container" />
+	
+			</div>
+	
+		</div>
+	
+	</div>
+</div>
 
 {% endblock %}

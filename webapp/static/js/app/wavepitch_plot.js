@@ -1,7 +1,16 @@
 
 define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
+	
+	function supportsSVG() {
+	    return !!document.createElementNS && !!document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGRect;
+	    
+	  }
 
-
+	if (!supportsSVG()){
+		$("#content_not_supported").show();
+		$("#main_content").hide();
+		return;
+	}
 
 	var dimension = {
 			width : 1400,

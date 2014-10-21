@@ -56,6 +56,9 @@
  
 }
 
+#content_not_supported{
+	display: none;
+}
 
 
 #wavepitch_note_detail{
