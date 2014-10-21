@@ -3,6 +3,34 @@ import requests
 import numpy as np
 import struct
 
+
+
+
+class Closer(object):
+    """
+    This object should be created with a with statement,
+    and it assumes there is a .close() method within 
+    the object.  Upon exit it will call close method to close it
+    """
+    
+    def __init__(self, obj):
+        """
+        :param obj: an object with a close method which closes upon exit
+        """
+        
+        self.obj = obj
+    def __enter__(self):
+        return self.obj
+    
+    def __exit__(self, *exc_info):
+        try:
+            close_it = self.obj.close
+        except AttributeError:
+            pass
+        else:
+            close_it()
+    
+
 class SimpleWebStreamer:
     
     def __init__(self, url):
@@ -17,12 +45,13 @@ class SimpleWebStreamer:
         self._url = url
         self._timeout = 10
         
-        
-
-    
 
     def set_timeout(self, value):
         self._timeout = value
+        return self
+
+    def open(self):
+        self._response = requests.get(self._url, stream = True, timeout = self._timeout)
         return self
         
     def file_size(self):
@@ -32,20 +61,23 @@ class SimpleWebStreamer:
         :returns: file size, or None if not exist
          
         """
-        response= requests.head(self._url)
-        file_size_str=response.headers['content-length']
-
-        if file_size_str.isdigit():
-            file_size = int(file_size_str)
-        else:
-            file_size = None
+        
+        #response = requests.head(self._url)
+        
+        file_size = None
+        if self._response.headers is not None and 'content-length' in self._response.headers:
+            
+            file_size_str=self._response.headers['content-length']
+    
+            if file_size_str.isdigit():
+                file_size = int(file_size_str)
+            else:
+                file_size = None
+            
         return file_size
-        response.close()
         
 
-    def open(self):
-        self._response = requests.get(self._url, stream = True, timeout = self._timeout)
-        
+
         
     def read(self, chunk_size):
         """
@@ -80,6 +112,7 @@ def step_range(start, end, step=1):
          
         
 class PartialWaveReader():
+    "This is a class which allows partial reads from a web site"
     
     def __init__(self, stream_reader):
         """
@@ -97,20 +130,23 @@ class PartialWaveReader():
         self._max_block_size_per_read = 1024  #byte
         self._channel_to_extract = 0  # for stereo, there are 2 channels, we will use channel 0
 
-    
+    def _populate_file_size(self, reader):
+        file_size = reader.file_size()
+        if file_size == None:
+            raise Exception('Unknown File Size')
+        if file_size < 44:
+            raise Exception('File Too Small')
+            
+        self._file_size = file_size
     
     def set_max_byte_allowed(self, max_byte_allowed):
         self._max_bytes_allowed = max_byte_allowed
         return self
     
-    def _extract_file_header_data(self):
-        self._file_size = self._stream_reader.file_size()
-        if self._file_size == None:
-            raise Exception('Unknown File Size')
-        if self._file_size < 44:
-            raise Exception('File Too Small')
+    def _extract_file_header_data(self, reader):
         
-        header_data = self._stream_reader.read(44)
+        
+        header_data = reader.read(44)
        
         self._chunk_id, self._chunk_size, self._format_, \
         self._sub_chunk_1_id, self._sub_chunk_1_size, \
@@ -155,13 +191,13 @@ class PartialWaveReader():
         return is_ok
     
     
-    def _create_numpy_array(self):
+    def _create_numpy_array(self, reader):
         
         self._np_wav_data = np.zeros(self._samples_to_read, self._npdtype)
         for pos, sample_step in step_range(self._start_sample, self._end_sample, self._samples_per_read):
             
             bytes_to_read = sample_step * self._block_align
-            data = self._stream_reader.read(bytes_to_read)
+            data = reader.read(bytes_to_read)
             if len(data) != bytes_to_read:
                 raise Exception('data read is less then expected')
             
@@ -174,16 +210,23 @@ class PartialWaveReader():
         
     
     def numpy_read_wav(self):
-        self._stream_reader.open()
+        """
+        this reads the WAVE data as numpy
         
-        self._extract_file_header_data()
-        if not self._check_is_supported():
-            raise Exception('Unknow file format or file not supported')
-        self._preload_calculation()
+        :returns: sample_rate, numpy array of wave data
+         
+        """
+        with Closer(self._stream_reader.open()) as reader:
+            self._populate_file_size(reader)
         
-        self._create_numpy_array()
-        
-        self._stream_reader.close()
+            self._extract_file_header_data(reader)
+            if not self._check_is_supported():
+                raise Exception('Unknow file format or file not supported')
+            self._preload_calculation()
+            
+            self._create_numpy_array(reader)
+            
+            
         
         return self._sample_rate, self._np_wav_data 
         
