@@ -23,7 +23,7 @@ class TestPartialWaveReader(unittest.TestCase):
         url = 'https://s3-eu-west-1.amazonaws.com/music-analysis/rise like a phoenix beginning.wav'
         max_bytes_allowed = 200001
         target_sample_size = 200001 / 4  ### this is hand calculated, 
-                                         ## allowing for 1 mb data, the test file should be stereo 
+                                         ### allowing for 1 mb data, the test file should be stereo 
         
         
         file_sample_rate, file_data_whole = spwavfile.read(file_name)
