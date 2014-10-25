@@ -56,27 +56,7 @@ class Signal:
         return freq, amplitute
         
     
-#    def _get_conv_window_param(self):   
-#        duration = 1.0 /  self._rate * len(self._signal_values)
-#        base_duration =  0.2
-#        window_width = 10.0 *  duration / base_duration
-#        sigma = 3.0  *  duration / base_duration
-#        return window_width , sigma
-#    
-#    def get_peak_freq(self):
-#        freq, amplitute = self.get_freq_amplitute()
-#        note_peak_finder = peak_finder.NotePeakFinder(freq, amplitute)
-#        
-#       window_width , sigma = self._get_conv_window_param()
-#        #print window_width, sigma
-#        conv_window = spsignal.general_gaussian(window_width, 1, sigma)
-#        
-#        note_peak_finder.set_conv_window(conv_window)
-#        peak_freqs, peak_amplitude = note_peak_finder.get_peak_freq()
-#        
-#        print peak_amplitude
-#        return peak_freqs, peak_amplitude
-    
+
 
 
 class SignalSliceGenerator:

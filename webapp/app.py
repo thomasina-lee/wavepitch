@@ -6,7 +6,7 @@ import sys, os
 
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), ".."))
 
-from analyser.music_analyser import analyse_wav_url 
+from analyser.pitchogram import pitchogram_from_url 
 
 
 app = flask.Flask(__name__)
@@ -59,7 +59,7 @@ def analyse():
             raise Exception('Invalid URL, url start with http/https required')
         #print url
         #payload = '{}'
-        payload = analyse_wav_url(url, 1024*1024)
+        payload = pitchogram_from_url(url, 3*1024*1024)
         
         return payload
     except:

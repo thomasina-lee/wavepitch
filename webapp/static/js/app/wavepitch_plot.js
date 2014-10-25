@@ -80,8 +80,8 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		.domain(d3.range(min_note, max_note + 1))
 		.rangeBands([ dimension.height , 0]);
 
-		var colorScale = d3.scale.log().range(
-				[ "#FFCC00",  "#471807" ]).domain([ 1, max_value/min_value ]);
+		var colorScale = d3.scale.pow().exponent(.25).range(
+				[ "#FFFFFF",  "#471807" ]).domain([ 0.001, max_value ]);
 		var ydomain = data.note_numbers
 		.map(function(d, i){ return [d, data.note_names[i]];})
 		.filter(function(d){return d[0] >= min_note && d[0]<= max_note;})
@@ -107,13 +107,17 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 
 
 		// Insert the data points.
-		svg_chart.selectAll("rect")
-		.data(data.active_notes).enter().append("rect")
-		.attr("x", function(d) { return xscale(d.time_value - time_delta/2.0);})
+		var rects = svg_chart.selectAll("rect")
+		.data(data.active_notes);
+		
+		rects.enter().append("rect");
+		rects.exit().remove();
+		
+		rects.attr("x", function(d) { return xscale(d.time_value - time_delta/2.0);})
 		.attr("y", function(d) {return yscale(d.note_number );})
 		.attr("width", function(d) {return Math.abs(xscale(time_delta) - xscale(0));})
 		.attr("height", function(d) {return yscale.rangeBand();})
-		.style("fill", function(d) {return colorScale(d.v/min_value);})
+		.style("fill", function(d) {return colorScale(d.v);})
 		// .on("mouseover", tip.show)
 		// .on("mouseout", tip.hide)
 

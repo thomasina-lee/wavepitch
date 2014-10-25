@@ -12,7 +12,7 @@ class MusicNote:
     inv_name_lookup = dict([ (x, i) for i, x in set(enumerate(names_sharp)).union(set(enumerate(names_flat)))])
     _freq_A4 = 440.0
     _note_nmr_A4 = 57
-    
+    max_note_number= 12 * 8 - 1
     
     @staticmethod
     def _note_nmr_from_freq(freq, threshold = 0.1):
@@ -21,7 +21,9 @@ class MusicNote:
         
         round_nmr = int(round(est_nmr))
         note_nmr = round_nmr + MusicNote._note_nmr_A4 
-        if abs(est_nmr - round_nmr) < threshold and note_nmr >= 0 and note_nmr < 12 * 8:
+        
+        diff = est_nmr - round_nmr
+        if diff >= -threshold and diff < threshold and note_nmr >= 0 and note_nmr < MusicNote.max_note_number + 1:
             return round_nmr + MusicNote._note_nmr_A4 
     
     @staticmethod
