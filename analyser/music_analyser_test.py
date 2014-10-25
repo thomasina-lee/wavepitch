@@ -16,8 +16,8 @@ class TestMusicAnalyser(unittest.TestCase):
 
         amp=[5.00, 3.88, 4.33, 600.00]       
         peak_freq_finder = SignalPeakFreqFinderV1()
-        peak_freq_finder.get_peak_freq = MagicMock()
-        peak_freq_finder.get_peak_freq.return_value = ([392.00, 493.88, 587.33, 600.00], amp )
+        peak_freq_finder.call = MagicMock()
+        peak_freq_finder.call.return_value = ([392.00, 493.88, 587.33, 600.00], amp )
         sub_signal = Signal()
        
        

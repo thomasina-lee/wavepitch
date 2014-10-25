@@ -23,7 +23,7 @@ class TestNotePeakFinder(unittest.TestCase):
         
         ss =  Signal()
         ss.set_signal(signal_y, rate)
-        peaks, amplitude = SignalPeakFreqFinderV1().get_peak_freq(ss)
+        peaks, amplitude = SignalPeakFreqFinderV1().call(ss)
         self.assertEqual(len(peaks), len(target_freqs))
         result = np.abs(peaks / np.array(target_freqs) -1) < 0.01
         self.assertListEqual(result.tolist(), [True]*len(target_freqs))

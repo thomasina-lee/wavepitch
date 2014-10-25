@@ -10,17 +10,19 @@ from wave_reader import PartialWaveReader, SimpleWebStreamer
 
 class MusicAnalyser:
     
-    def __init__(self, wave_signal, slice_generator, signal_peak_freq_finder = SignalPeakFreqFinderV1()):
+    def __init__(self, wave_signal, slice_generator, signal_peak_freq_finder = SignalPeakFreqFinderV1('power')):
         
         self._wave_signal = wave_signal
         self._signal_slice_generator = slice_generator
         self._peak_freq_finder = signal_peak_freq_finder
+        self._note_acceptance_threshold = 0.5
     
     def _get_note_numbers(self, sub_signal):
-        peak_freq, peak_amplitude = self._peak_freq_finder.get_peak_freq(sub_signal)
+        peak_freq, peak_amplitude = self._peak_freq_finder.call(sub_signal)
         paired = [{'freq': x[0], 'amp': x[1]} for x in zip(peak_freq, peak_amplitude)]
         valid_music_note_pair = filter(lambda m: m['note'].is_note(),  
-                                  [{'note': MusicNote().set_from_freq(f['freq'], 0.3),
+                                  [{'note': MusicNote().set_from_freq(f['freq'],
+                                                                      self._note_acceptance_threshold),
                                     'amp': f['amp']} for f in paired])
         return [ mn['note'].get_note_number() for mn in  valid_music_note_pair ], \
                   [ mn['amp'] for mn in valid_music_note_pair ]

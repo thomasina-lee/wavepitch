@@ -2,9 +2,7 @@
 
 import numpy as np
 import scipy.io.wavfile as spwavfile
-import scipy.signal as spsignal
 
-import peak_finder
     
     
 class Signal:

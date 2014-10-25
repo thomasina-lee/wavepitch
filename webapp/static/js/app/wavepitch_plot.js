@@ -16,7 +16,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 
 	var dimension = {
 			width : 1400,
-			height : 500,
+			height : 600,
 			margin : 70
 	};
 
@@ -67,6 +67,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		var max_note = (d3.max(data.active_notes, function(note_data){return note_data.note_number;}));
 		var min_note = (d3.min(data.active_notes, function(note_data){return note_data.note_number;}));
 		var max_value = (d3.max(data.active_notes, function(note_data){return note_data.v;}));
+		var min_value = (d3.min(data.active_notes, function(note_data){return note_data.v;}));
 		var time_delta =  (d3.max(data.time_values) - d3.min(data.time_values))/(data.time_values.length-1);
 
 
@@ -79,8 +80,8 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		.domain(d3.range(min_note, max_note + 1))
 		.rangeBands([ dimension.height , 0]);
 
-		var colorScale = d3.scale.linear().range(
-				[ "#ffffff",  "#471807" ]).domain([ 0, max_value ]);
+		var colorScale = d3.scale.log().range(
+				[ "#FFCC00",  "#471807" ]).domain([ 1, max_value/min_value ]);
 		var ydomain = data.note_numbers
 		.map(function(d, i){ return [d, data.note_names[i]];})
 		.filter(function(d){return d[0] >= min_note && d[0]<= max_note;})
@@ -93,7 +94,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		var yaxis = d3.svg.axis().scale(yaxis_scale).orient("left");
 
 		var tip = d3.tip().attr('class', 'd3-tip')
-		.offset([-yscale.rangeBand()/2.0, 0])
+		.offset([-yscale.rangeBand(), 0])
 		.html(function(d) { 
 			return  "Time: " + d.time_value + ", Note: " + d.note_name; });
 
@@ -112,7 +113,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		.attr("y", function(d) {return yscale(d.note_number );})
 		.attr("width", function(d) {return Math.abs(xscale(time_delta) - xscale(0));})
 		.attr("height", function(d) {return yscale.rangeBand();})
-		.style("fill", function(d) {return colorScale(d.v);})
+		.style("fill", function(d) {return colorScale(d.v/min_value);})
 		// .on("mouseover", tip.show)
 		// .on("mouseout", tip.hide)
 
@@ -124,7 +125,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 			d3.select("#wavepitch_note_detail input")
 			.property("value", function() {
 				if (d.v > 0) {
-					return "Time: " + d.time_value + ", Note: " + d.note_name;
+					return "Time: " + d.time_value + ", Note: " + d.note_name ;
 				} else {
 					return " ";
 				}

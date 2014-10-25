@@ -15,7 +15,7 @@ class PeakRangeFinder:
         self._valid_end = 0
         self._valid_extremas = []
         self._tall_peak_threshold = 1.5
-        self._peak_base_threshold = 0.75
+        self._peak_base_threshold = 1.0
         self._min_peak_value = 0
      
     def set_min_peak_value(self, min_peak_value):    
@@ -68,7 +68,8 @@ class PeakRangeFinder:
     def _is_tall_peak(self, vv):
         
         
-        return vv[1][1] * 2.0 / (vv[0][1] + vv[2][1]) > self._tall_peak_threshold and vv[1][1] > self._min_peak_value
+        return vv[1][1] * 2.0 / (vv[0][1] + vv[2][1]) > self._tall_peak_threshold  \
+            and vv[1][1] > self._min_peak_value
     
    
     def _peak_base_direction(self, vv):
@@ -158,11 +159,21 @@ class FreqPeakFinderV1:
         return merged
     
     def _find_min_peak_value(self):
-        #min_peak_value = np.percentile(extremas, 99.0 )
-        pc = np.percentile(self._smoothed_spectrum, 99.0)
-        min_peak_value = (np.mean(self._smoothed_spectrum[self._smoothed_spectrum < pc]) + 
-                          np.mean(self._smoothed_spectrum[self._smoothed_spectrum >= pc]))/2
-        #print min_peak_value
+        
+        pc = np.percentile(self._smoothed_spectrum, 99.5)
+        lmean = np.mean(self._smoothed_spectrum[self._smoothed_spectrum < pc])
+        lstd = np.std(self._smoothed_spectrum[self._smoothed_spectrum < pc])
+        min_peak_value = lmean + 2.0 * lstd
+        
+        #min_peak_value = (np.mean(self._smoothed_spectrum[self._smoothed_spectrum < pc]) + 
+        #                  np.mean(self._smoothed_spectrum[self._smoothed_spectrum >= pc]))/2
+        
+        #rev = np.sort(self._smoothed_spectrum)[::-1]
+        #csum = np.cumsum(rev) 
+        #total = np.sum(rev)
+        #min_peak_value = np.min(sorted[csum < total * 0.95])
+        
+        print 'min peak value = ' + str(min_peak_value)
         return min_peak_value
     
     def _find_tall_smooth_peak(self, extremas):
@@ -198,34 +209,43 @@ class FreqPeakFinderV1:
 
 class SignalPeakFreqFinderV1:
     
-    def _conv_windon_fn(self, sig):
+    def _conv_window_fn(self, sig):
         
         duration = 1.0 /  sig.get_rate() *  sig.get_signal_length()
         base_duration =  0.2
-        window_width = 10.0 *  duration / base_duration
-        sigma = 3.0  *  duration / base_duration
-        return window_width , sigma
+        window_width = 15.0 *  duration / base_duration
+        #sigma = 3.0  *  duration / base_duration
+        #conv_window = spsignal.general_gaussian(window_width, 1, sigma)
+        conv_window = spsignal.hamming(window_width, False)
+        return conv_window
     
     
     
-    def __init__(self):
+    def __init__(self, formula_name='amplitute'):
+        self._formula_name = formula_name
         pass
         
+    def _formula(self, freq, amplitute):
+        if self._formula_name == 'power':
+            print 'power!'
+            return amplitute * amplitute
+        else :
+            return amplitute 
+    
         
-        
-    def get_peak_freq(self, sig):
+    def call(self, sig):
         
         freq, amplitute = sig.get_freq_amplitute()
-        note_peak_finder = FreqPeakFinderV1(freq, amplitute)
         
-        window_width , sigma = self._conv_windon_fn(sig)
-    #print window_width, sigma
-        conv_window = spsignal.general_gaussian(window_width, 1, sigma)
+        val = self._formula(freq, amplitute)
+        note_peak_finder = FreqPeakFinderV1(freq, val)
         
+
+        conv_window = self._conv_window_fn(sig)
         note_peak_finder.set_conv_window(conv_window)
         peak_freqs, peak_amplitude = note_peak_finder.get_peak()
         
-        print peak_amplitude
+        
         return peak_freqs, peak_amplitude
 
 
