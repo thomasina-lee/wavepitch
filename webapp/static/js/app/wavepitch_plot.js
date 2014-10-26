@@ -15,9 +15,9 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 
 
 	var dimension = {
-			width : 1400,
+			width : 1600,
 			height : 600,
-			margin : 70
+			margin : 50
 	};
 
 	var svg_chart = d3.select("#wavepitch_chart_container")
@@ -39,7 +39,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 
 
 
-
+	var tip = d3.tip().attr('class', 'd3-tip');
 
 
 	var analyse_callback = function(data) {
@@ -52,8 +52,8 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		 * whether note is active)}
 		 * 
 		 */
-
-
+    
+		
 		// process the data first
 		data.active_notes = data.active_notes.map(function(d) {
 			d.note_name = data.note_names[d.n];
@@ -70,6 +70,13 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		var min_value = (d3.min(data.active_notes, function(note_data){return note_data.v;}));
 		var time_delta =  (d3.max(data.time_values) - d3.min(data.time_values))/(data.time_values.length-1);
 
+		 
+    var the_width  = Math.max(dimension.width, ((max_time - min_time)/ time_delta + 2) * 10
+        + 2 * dimension.margin);
+    console.log(the_width);
+    console.log(((max_time - min_time)/ time_delta + 2) * 10)
+    d3.select('#wavepitch_chart_container > svg').attr('width', the_width);
+		
 
 		var xscale = d3.scale.linear()
 		.domain([min_time - time_delta, max_time + time_delta])
@@ -93,8 +100,8 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		var xaxis = d3.svg.axis().scale(xscale).orient("bottom");
 		var yaxis = d3.svg.axis().scale(yaxis_scale).orient("left");
 
-		var tip = d3.tip().attr('class', 'd3-tip')
-		.offset([-yscale.rangeBand(), 0])
+		tip
+		.offset([-12, 0])
 		.html(function(d) { 
 			return  "Time: " + d.time_value + ", Note: " + d.note_name; });
 
@@ -177,6 +184,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 
 	
 	var input_submit_control = function(isEnable){
+	  
 		$('#wavepitch_analyse input').prop('disabled', !isEnable);
 		$('#wavepitch_analyse button').prop('disabled',!isEnable);
 	};
@@ -189,7 +197,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 
 	$(function() {
 
-
+    input_submit_control(true);
 		$( window ).resize(function() {
 			$("#wavepitch_overlay")
 			.width($("#wavepitch_overlay").parent().width())

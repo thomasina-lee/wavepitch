@@ -27,6 +27,7 @@
 }
 
 /* Style northward tooltips differently */
+
 .d3-tip.n:after {
   margin: -1px 0 0 0;
   top: 100%;
@@ -38,6 +39,10 @@
 #wavepitch_chart_container {
   overflow-x: scrollbar;
   overflow-y: hidden;
+}
+
+#wavepitch_chart_container #yaxis{
+  font-size: 8px;
 }
 
 #wavepitch_error_box {
