@@ -56,9 +56,20 @@
   left=0;
   top=0;
   z-index: 20;
-  background-color: rgba(0,0,0,0.5); /*dim the background*/
   
- 
+ background-color: rgba(0,0,0,0.5); 
+}
+
+.watchpitch_not_running{
+  
+
+}
+.watchpitch_running{
+  
+  
+  background-image: url('../pic/ajax-loader.gif') ;
+  background-position: 50% 50% ;
+  background-repeat: no-repeat;
 }
 
 #content_not_supported{

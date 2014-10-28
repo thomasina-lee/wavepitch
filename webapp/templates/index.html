@@ -29,9 +29,17 @@
 					<div class="col-sm-9">
 						<div id="wavepitch_analyse" class="input-group">
 							<span class="input-group-addon">url:</span> <input
-								class="form-control" type="text" value="{{default_url}}" /> <span
-								class="input-group-btn">
-								<button type="button" class="btn btn-default">go</button>
+								class="form-control" type="text" value="{{default_url}}" /> 
+							<span class="input-group-btn">
+								<button id="wavepitch_main_button" type="button" class="btn btn-default">go</button>
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+								<ul class="dropdown-menu dropdown-menu-right" role="menu">
+                  <li><a id="wavepitch_filtered_button" href="#">filtered (default)</a></li>
+                  <li><a id="wavepitch_full_button" href="#">full spectrum</a></li>
+                </ul>
 							</span>
 						</div>
 						<div id="wavepitch_error_box"
@@ -39,8 +47,8 @@
 							<button type="button" class="close">
 								<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 							</button>
-							<strong>Warning!</strong> Unable to complete request. Please check
-							if the link is correct.
+							<strong>Warning!</strong> Unable to complete request. Please check if the link is correct or 
+							try again later.
 						</div>
 	
 					</div>

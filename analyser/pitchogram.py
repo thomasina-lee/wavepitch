@@ -150,8 +150,11 @@ def pitchogram_from_signal(sig, filtered = True):
     
     slice_generator =  SignalSliceGenerator(sig.get_signal_length(),sig.get_rate())
     slice_generator.set_interval(0.1, True)
+    
+    noise_cutoff = NoiseCutoff() if filtered else None
+    
     pitchogram_generator = PitchogramGenerator(sig, slice_generator,
-                                               PitchosliceGenerator(NoiseCutoff()))
+                                               PitchosliceGenerator(noise_cutoff))
     
     active_notes_0, note_numbers, note_name_0, time_values = pitchogram_generator.generate_matrix()
     
@@ -179,5 +182,5 @@ def pitchogram_from_url(url, max_byte_allowed = 1024*100, timeout = 10, filtered
     
     sig.set_signal(wave_data, sample_rate)
     
-    return pitchogram_from_signal(sig)
+    return pitchogram_from_signal(sig, filtered)
         

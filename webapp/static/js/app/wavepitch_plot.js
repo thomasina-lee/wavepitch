@@ -26,7 +26,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 	.attr("height", dimension.height + 2 * dimension.margin)
 	.append("svg:g").attr("class", "chart").attr("transform",
 			"translate(" + dimension.margin + ", " + dimension.margin + ")");
-	;
+	
 
 
 
@@ -34,7 +34,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 			"translate(" + 0 + ", " + (dimension.height) + ")");
 	svg_chart.append("svg:g").attr("id", "yaxis");
 
-	var position = 0;
+
 
 
 
@@ -71,10 +71,9 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		var time_delta =  (d3.max(data.time_values) - d3.min(data.time_values))/(data.time_values.length-1);
 
 		 
-    var the_width  = Math.max(dimension.width, ((max_time - min_time)/ time_delta + 2) * 10
-        + 2 * dimension.margin);
-    console.log(the_width);
-    console.log(((max_time - min_time)/ time_delta + 2) * 10)
+    var the_width  = Math.max(dimension.width, ((max_time - min_time)/ time_delta + 2) * 10 + 
+        2 * dimension.margin);
+
     d3.select('#wavepitch_chart_container > svg').attr('width', the_width);
 		
 
@@ -87,7 +86,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		.domain(d3.range(min_note, max_note + 1))
 		.rangeBands([ dimension.height , 0]);
 
-		var colorScale = d3.scale.pow().exponent(.25).range(
+		var colorScale = d3.scale.pow().exponent(0.25).range(
 				[ "#FFFFFF",  "#471807" ]).domain([ 0.001, max_value ]);
 		var ydomain = data.note_numbers
 		.map(function(d, i){ return [d, data.note_names[i]];})
@@ -183,21 +182,51 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 	};
 
 	
-	var input_submit_control = function(isEnable){
+	var toggle_running_controls = function(is_running){
 	  
-		$('#wavepitch_analyse input').prop('disabled', !isEnable);
-		$('#wavepitch_analyse button').prop('disabled',!isEnable);
+		$('#wavepitch_analyse input').prop('disabled', is_running);
+		$('#wavepitch_analyse button').prop('disabled', is_running);
+		if (is_running){
+		  $('#wavepitch_overlay').addClass('watchpitch_running');
+		  $('#wavepitch_overlay').removeClass('watchpitch_not_running');
+		}
+		else{
+		  $('#wavepitch_overlay').removeClass('watchpitch_running');
+		  $('#wavepitch_overlay').addClass('watchpitch_not_running');
+		}
+		
 	};
 	
 	var complete_callback = function(){
-		input_submit_control(true);
-
+		toggle_running_controls(false);
+    
 	};
+
+  var run_analyse = function(filtered){
+    console.log('here');
+    $("#wavepitch_overlay").show();
+      $('#wavepitch_error_box').hide();
+      toggle_running_controls(true);
+      $.ajax({
+        url : "/analyse/",
+        type : 'POST',
+        data : {
+          url : $("#wavepitch_analyse input").val(),
+          filtered: filtered
+        },
+        dataType : "json",
+        success : analyse_callback,
+        error: error_callback,
+        complete: complete_callback
+      });
+    
+    
+  };
 
 
 	$(function() {
 
-    input_submit_control(true);
+    toggle_running_controls(false);
 		$( window ).resize(function() {
 			$("#wavepitch_overlay")
 			.width($("#wavepitch_overlay").parent().width())
@@ -217,27 +246,20 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 		});
 
 
-		$("#wavepitch_analyse button").click(function() {
-
-			$("#wavepitch_overlay").show();
-			$('#wavepitch_error_box').hide();
-			input_submit_control(false);
-			$.ajax({
-				url : "/analyse/",
-				type : 'POST',
-				data : {
-					url : $("#wavepitch_analyse input").val()
-				},
-				dataType : "json",
-				success : analyse_callback,
-				error: error_callback,
-				complete: complete_callback
-			});
-
-
+		$("#wavepitch_analyse #wavepitch_main_button").click(function() {
+      run_analyse(true);
+			
 		});
 
-
+    $("#wavepitch_analyse #wavepitch_filtered_button").click(function() {
+      run_analyse(true);
+      
+    });
+    
+    $("#wavepitch_analyse #wavepitch_full_button").click(function() {
+      run_analyse(false);
+      
+    });
 
 		$('#wavepitch_analyse input').keyup(function(e){
 
@@ -247,7 +269,7 @@ define([ 'jquery',  'd3' , 'd3tip'], function($, d3, d3tip) {
 
 
 
-
+    console.log('end setup');
 	});
 
 
