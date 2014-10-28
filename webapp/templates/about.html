@@ -4,26 +4,38 @@
        <div class="panel panel-default">
            <div class="panel-body">
            <h1 class="page-header">About</h1>
-           <p>This project starts with the fact that I am not so talented with music. 
-           But I would like to play a piece of music I love:  'Rise Like A Phoenix'
-           performed by Conchita Wurst, winner of the Eurovision Song Contest 2014 </p>
+           <p>This project starts with the fact that I am not so talented with music.  
+           That I cannot really play songs by ear, but I would like to play some music I listened. </p>
            
            <p>
-           The plan is this:  Given a wave file, 
-           perform the Fourier Transform on it to get the wave spectrum, 
-           find the peaks frequencies,
-           calculate the corresponding pitch number of those frequencies, 
-           and display the result!
+           I understand that the technologies in music transcription is still under research and development.
+           There are some success with single instrument and monophony music.  However, to write one 
+           which transcribe a full pop song today will be very ambitious.
+           </p>
+           <p>
+           Nonetheless I think it will still be useful to have a spectogram like chart 
+           in which shows the corresponding music note value of frequences.  
+
            </p>
 
            <p>
-           The hardest part is to identify peak frequencies.  As with real data, 
-           the wave form will be very noisy.  I have deployed some heuristics on this,
-           but I don't think the result is very great.
+           It could also be useful to just show the more prominent peaks of the wave spectrum.
+           Therefore, I have deployed some heuristics in an attempt to achieve this as well.
            </p>           
+           <p>
+                      This is the general plan:  
+           <ul>
+             <li>Read a wave file</li>
+             <li>divide wave signal into slices by time</li>
+             <li>for each slice of wave signal perform Fast Fourier Transform to get the wave spectrum</li>
+             <li>calculate the corresponding pitch number of those frequencies</li>
+             <li>(optional: apply heuristic to select more prominent pitch signals)</li>
+             <li>visualise the result</li>
+           </ul>
            
             <p>
-           Anyway, I hope you like it!   You can get the source from git-hub.
+           The source code can be found in <a href="https://github.com/thomasina-lee/wavepitch">github</a>
+           <a =
            </p>    
            
           </div>

@@ -1,9 +1,11 @@
-# PURPOSE
+# ABOUT
 
-This is a online application, which takes 
-an online WAV file as input, performs some spectrum analysis,
-and return what music pitches as output by time.
+This is a web application, which takes 
+an online WAV file as input, performs some signal analysis,
+and output as spectrogram like chart, in which frequencies 
+are translated to music note value.  A simple heuristic can be 
+applied to detect more prominent note values.
 
-It is easier to see it, so a working example can be found in:
+A working example can be found in:
 
 http://wavepitch.herokuapp.com/ 
