@@ -8,4 +8,6 @@ applied to detect more prominent note values.
 
 A working example can be found in:
 
-http://wavepitch.herokuapp.com/ 
+http://wavepitch.herokuapp.com/
+
+Enjoy!
